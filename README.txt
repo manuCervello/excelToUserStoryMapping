@@ -1,10 +1,9 @@
 Requirements:
 
-Python 2.7.x installed with the following modules:
-- xlrd
-- xlwt
-- sys (by default)
-- ConfigParser (by default)
+xlrd: https://pypi.python.org/pypi/xlrd
+xlwt: https://pypi.python.org/pypi/xlwt
+html: https://pypi.python.org/pypi/html/1.16
+
 
 The basic call is python xlsToUserStoryMapping.py config.ini > output.txt
 
@@ -23,8 +22,9 @@ ReleaseOrder: 'Release 1','Release 2','Release 3','Release 4','Uncategorized'
 
 [Output]
 RootNodeName: Project
-OutputFile: Project_userStoryMapping.xls
-OutputSheetName: Project User Story Mapping
+OutputExcelFile: Project_userStoryMapping.xls
+OutputExcelSheetName: Project User Story Mapping
+OutputHTMLFile: Project_userStoryMapping.html
 
 
 The release Order is important and all those names should be present in the Backlog.xls. The last one 'Uncategorized' is used to group all the
