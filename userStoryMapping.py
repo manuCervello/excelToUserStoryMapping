@@ -23,6 +23,9 @@ class UserStoryMapping(object):
 	def getUserStories(self, releaseNode):
 		return releaseNode.children
 
+	def getTotalFeatures(self):
+		return self.__totalFeatures
+
 	def createFromTable(self, table):
 		for row in table.getBacklog():
 			themeNode = self.__addTheme(row[BacklogTable.THEME])
@@ -30,7 +33,6 @@ class UserStoryMapping(object):
 			releaseNode = self.__addReleaseToFeature(featureNode, row[BacklogTable.RELEASE])
 			userStoryNode = self.__addUserStory(releaseNode, row[BacklogTable.USER_STORY])
 			self.__addStatus(userStoryNode, row[BacklogTable.STATUS])
-			print "creating node from table for ", row[BacklogTable.THEME], " : ", row[BacklogTable.USER_STORY]
 
 	def __createNode(self, parentNode, name):
 		__node = parentNode.getChildByName(name)
@@ -75,5 +77,3 @@ class UserStoryMapping(object):
 	def __addStatus(self, userStoryNode, statusName):
 		userStoryNode.status = statusName
 		
-	def getTotalFeatures(self):
-		return self.__totalFeatures

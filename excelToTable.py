@@ -20,6 +20,15 @@ class ExcelToTable(object):
 		self.__excelIdColumn = 0
 		self.__excelUserStoryColumn = 0
 		self.__excelStatusColumn = 0
+		self.__new = "New"
+		self.__done = "Done"
+		self.__doing = "Doing"
+		
+	def setLiterals(self, new, done, doing):
+		self.__new = new
+		self.__done = done
+		self.__doing = doing
+		
 
 	def setColumns(self, theme, feature, release, idNumber, userStory, status):
 		self.__excelThemeColumn = theme
@@ -42,8 +51,13 @@ class ExcelToTable(object):
 			id = int(worksheet.cell_value(currentRow, self.__excelIdColumn))
 			name = worksheet.cell_value(currentRow, self.__excelUserStoryColumn)
 			status = worksheet.cell_value(currentRow, self.__excelStatusColumn)
-
-			table.append([theme, feature, release, str(id)+name, status])
-			print "Transforming node for ", theme, " : ", name
+			if status == self.__done:
+				status = "Done"
+			elif status == self.__doing:
+				status = "Doing"
+			else:
+				status = "New"
+				
+			table.append([theme, feature, release, str(id) + " - " + name, status])
 
 		return table
