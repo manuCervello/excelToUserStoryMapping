@@ -4,7 +4,6 @@ xlrd: https://pypi.python.org/pypi/xlrd
 xlwt: https://pypi.python.org/pypi/xlwt
 html: https://pypi.python.org/pypi/html/1.16
 
-
 The basic call is python xlsToUserStoryMapping.py config.ini > output.txt
 
 The config.ini file should contain those fields:

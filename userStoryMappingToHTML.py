@@ -6,8 +6,9 @@ class UserStoryMappingToHTML(object):
 	
 	def __setStyle(self):
 		style = "<style type='text/css'>"
-#		style += ".fix{position: fixed; z-index:999;}"
-#		style += ".mov{position: relative; z-index:99;}"
+		style += "*{margin: 0px; padding: 0px;}"
+		style += "#fixedCards{position: fixed; z-index:999;}"
+		style += "#movingCards{position: relative; top: 280px; z-index:99;}"
 		style += "table{border-collapse: collapse;}"
 		style += ".themeClass{background-color: #A9BCF5}"
 		style += ".featureClass{background-color: #F4FA58}"
@@ -19,9 +20,15 @@ class UserStoryMappingToHTML(object):
 		style += "tr.releaseRow td.releaseRow{border-bottom: 1px solid black}"
 		style += "</style>"
 		return style
-	
-	def __insertRowSeparator(self):
-		return "<td></td>"
+
+	def __setScripts(self):
+		f = open("../js/jquery-1.11.2.min.js", "r")
+		string = "<script>"
+		string += f.read()
+		string += "$(window).scroll(function(event) {$(\"#fixedCards\").css(\"margin-left\", 0-$(document).scrollLeft());});"
+		string += "</script>"
+		f.close()
+		return string
 		
 	def __insertEmptyCell(self):
 		return "<td></td>"
@@ -37,25 +44,19 @@ class UserStoryMappingToHTML(object):
 		
 	def __insertThemesRow(self, userStoryMapping):
 		string = "<tr>"
-		first = True
+		string += "<td>" + self.__insertReleaseNameCard("") + "</td>"
 		for theme in userStoryMapping.getThemes():
-			if first == True:
-				string += "<td>" + self.__insertReleaseNameCard("") + "</td>"
-				first = False
-			else:
-				string += self.__insertRowSeparator()
 			string += "<td>" + self.__insertCard(theme.name, "themeClass") + "</td>"
 			for feature in range(1, len(userStoryMapping.getFeatures(theme)), 1):
-				string += self.__insertRowSeparator()
 				string += self.__insertEmptyCell()
 		string += "</tr>"
 		return string
 
 	def __insertFeaturesRow(self, userStoryMapping):
 		string = "<tr>"
+		string += "<td>" + self.__insertReleaseNameCard("") + "</td>"
 		for theme in userStoryMapping.getThemes():
 			for feature in userStoryMapping.getFeatures(theme):
-				string += self.__insertRowSeparator()
 				string += "<td>" + self.__insertCard(feature.name, "featureClass") + "</td>"
 				self.__totalTableColumns += 2
 		string += "</tr>"
@@ -99,13 +100,12 @@ class UserStoryMappingToHTML(object):
 		string = ""
 		for row in range(0, depth):
 			string += "<tr>"
-			string += self.__insertRowSeparator()
+			string += "<td>" + self.__insertReleaseNameCard("") + "</td>"
 			for column in range(0, len(userStories)):
 				if userStories[column][row] != None:
 					string += "<td>" + self.__insertCard(userStories[column][row][0], userStories[column][row][1]+"Class") + "</td>"
 				else:
 					string += self.__insertEmptyCell()
-				string += self.__insertRowSeparator()
 			string += "</tr>"
 		return string
 			
@@ -124,24 +124,27 @@ class UserStoryMappingToHTML(object):
 	def convert(self, userStoryMapping):
 		html = "<html>"
 		html += "<body>"
-		html += "<head>" + self.__setStyle() + "</head>"
+		html += "<head>"
+		html += self.__setScripts()
+		html += self.__setStyle()
+		html += "</head>"
 		featuresWritten = 0
-#		html += "<div class='fix'>"
-		html += "<table>"
+		html += "<div id='fixedCards'>"
+		html += "<table style=\"background-color:white\">"
 		html += self.__insertThemesRow(userStoryMapping)
 		html += self.__insertFeaturesRow(userStoryMapping)
 		html += self.__insertFeaturesSeparator()
-#		html += "</table>"
-#		html += "</div>"
-#		html += "<div class='mov'>"
-#		html += "<table>"
+		html += "</table>"
+		html += "</div>"
+		html += "<div id='movingCards'>"
+		html += "<table style=\"background-color:white\">"
 		for release in range(0, len(userStoryMapping.releaseOrder)):
 			print userStoryMapping.releaseOrder[release][0]
 			html += self.__insertUserStoriesInRelease(userStoryMapping, userStoryMapping.releaseOrder[release][0], userStoryMapping.releaseOrder[release][1])
 			html += self.__insertReleaseName(userStoryMapping.releaseOrder[release][0], userStoryMapping.getTotalFeatures())
 
 		html += "</table>"
-#		html += "</div>"
+		html += "</div>"
 		html += "</body>"
 		html += "</html>"
 
