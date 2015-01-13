@@ -44,3 +44,11 @@ Temporary Items
 
 # Python
 .pyc
+*.pyc
+*.pyc
+sample/AGM_Backlog.xls
+sample/configWindowsAGM.ini
+sample/OVuserStoryMapping.bat
+sample/OV_userStoryMapping.html
+sample/OV_userStoryMapping.xls
+excelToTable.pyc
