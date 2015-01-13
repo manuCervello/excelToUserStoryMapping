@@ -52,3 +52,4 @@ sample/OVuserStoryMapping.bat
 sample/OV_userStoryMapping.html
 sample/OV_userStoryMapping.xls
 excelToTable.pyc
+backlogTable.pyc
