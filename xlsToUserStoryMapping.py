@@ -18,6 +18,7 @@
 #Twitter: @ManuCervello
 
 import sys
+import time
 import ConfigParser
 
 from userStoryMapping import UserStoryMapping
@@ -47,10 +48,11 @@ myBacklogTable = myExcelToTable.convert()
 myUserStoryMapping = UserStoryMapping(Config.get('Input','ReleaseOrder'))
 myUserStoryMapping.createFromTable(myBacklogTable)
 
+today = time.strftime("%Y-%m-%d")
 
-myUserStoryMappingToExcel = UserStoryMappingToExcel(Config.get('Output','OutputExcelFile'), Config.get('Output','OutputExcelSheetName'))
+myUserStoryMappingToExcel = UserStoryMappingToExcel(today+"_"+Config.get('Output','OutputFile')+".xls", Config.get('Output','OutputExcelSheetName'))
 myUserStoryMappingToExcel.convert(myUserStoryMapping)
 
-myUserStoryMappingToHTML = UserStoryMappingToHTML(Config.get('Output','OutputHTMLFile'))
+myUserStoryMappingToHTML = UserStoryMappingToHTML(today+"_"+Config.get('Output','OutputFile')+".html")
 myUserStoryMappingToHTML.convert(myUserStoryMapping)
 
